@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "807850891551",
+    "project_id": "mynotes-quinnd-app",
+    "storage_bucket": "mynotes-quinnd-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807850891551:android:90f16f9139e208e361f82a",
+        "android_client_info": {
+          "package_name": "com.flutterTest.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807850891551-k895jlb0iij8g8hu9hmj535a266ao9ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnthSDDLKGsvKucynIEyf1r2lXL8PjDug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807850891551-k895jlb0iij8g8hu9hmj535a266ao9ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
