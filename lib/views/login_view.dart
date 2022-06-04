@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/constants/routes.dart';
 import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
@@ -65,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
                 FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
                 final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: (email), password: password);
                 devtools.log(userCredential.toString()); // prints a User Credential that is not used for anything else
-                Navigator.of(context).pushNamedAndRemoveUntil('/notes/', (route) => false,); // Push notes screen and remove everything else
+                Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false,); // Push notes screen and remove everything else
               } on FirebaseAuthException catch(e){ // If authentication exception
                 devtools.log(e.code.toString());
                 if (e.code == 'user-not-found'){
@@ -86,7 +87,7 @@ class _LoginViewState extends State<LoginView> {
           ),
           TextButton(
             onPressed: () { 
-            Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route) => false); // Remove everything on screen and go to route with this string key
+            Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false); // Remove everything on screen and go to route with this string key
             },
             child: const Text('Register Here'),
           )
