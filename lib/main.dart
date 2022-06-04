@@ -106,14 +106,14 @@ class _NotesViewState extends State<NotesView> {
   }
 }
 
-Future<bool> showLogOutDialog(BuildContext context){    // Shows dialog when logout is pressed
+Future<bool> showLogOutDialog(BuildContext context){    // Shows dialog when logout is pressed return true or false
   return showDialog<bool>(
     context: context, 
     builder: (context){
       return AlertDialog(
         title: const Text('Sign Out'),
         content: const Text('Are you sure you want to sign out?'),
-        actions: [
+        actions: [  // 2 buttons either logs out our cancels
           TextButton(
             onPressed: (){Navigator.of(context).pop(false);}, child: const Text('Cancel')),
           TextButton(
