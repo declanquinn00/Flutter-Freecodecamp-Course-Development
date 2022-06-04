@@ -64,7 +64,8 @@ class _LoginViewState extends State<LoginView> {
               try{
                 FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
                 final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: (email), password: password);
-                devtools.log(userCredential.toString());
+                devtools.log(userCredential.toString()); // prints a User Credential that is not used for anything else
+                Navigator.of(context).pushNamedAndRemoveUntil('/notes/', (route) => false,); // Push notes screen and remove everything else
               } on FirebaseAuthException catch(e){ // If authentication exception
                 devtools.log(e.code.toString());
                 if (e.code == 'user-not-found'){

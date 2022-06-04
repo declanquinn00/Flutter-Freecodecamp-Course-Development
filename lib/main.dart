@@ -21,6 +21,7 @@ void main() {
       routes: {   // Named paths to different views with strings as keys
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView(),
+        '/notes/': (context) => const NotesView(),
       },
     ),
   );
