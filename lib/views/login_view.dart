@@ -46,7 +46,7 @@ class _LoginViewState extends State<LoginView> {
             keyboardType: TextInputType.emailAddress, // Necessary fields for email!!!
             enableSuggestions: false,
             autocorrect: false,
-            decoration: InputDecoration(  // Decoration allows a hintText that dissapears when user starts typing
+            decoration: const InputDecoration(  // Decoration allows a hintText that dissapears when user starts typing
               hintText: 'Enter your Email here',
             )
           ),
@@ -55,7 +55,7 @@ class _LoginViewState extends State<LoginView> {
             obscureText: true,  // Necessary fields for password text Fields!!!
             enableSuggestions: false,
             autocorrect: false,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Enter your password here',
             )
           ),
