@@ -104,4 +104,10 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  @override
+  Future<void> initialize() {
+    // TODO: implement initialize
+    throw UnimplementedError();
+  }
+
 }
