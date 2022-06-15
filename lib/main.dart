@@ -5,8 +5,8 @@ import 'package:mynotes/views/login_view.dart';
 import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
-import 'dart:developer' as devtools show log; //Only show log options from dart:developer by typing devtools.XXX
-import 'firebase_options.dart';
+//import 'dart:developer' as devtools show log; //Only show log options from dart:developer by typing devtools.XXX
+//import 'firebase_options.dart';
 
 
 void main() {
@@ -33,7 +33,6 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { // Buld context is packaged info to pass info from one widget to another
-
     return FutureBuilder(  // run future value then build widget
         future: AuthService.firebase().initialize(),
         builder:(context, snapshot) { // snapshot is a state returns the result of our future
@@ -54,12 +53,10 @@ class Homepage extends StatelessWidget {
           default:  // else user will see this text
             return const CircularProgressIndicator(); // Loading indicator
           }
-          
         },
       );
   }
 }
-
 
 
 

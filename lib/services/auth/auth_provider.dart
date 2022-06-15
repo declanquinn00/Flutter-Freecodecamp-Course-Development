@@ -4,11 +4,7 @@ import 'package:mynotes/services/auth/auth_user.dart';
 import '../../firebase_options.dart';
 
 abstract class AuthProvider{
-  @override
-  Future<void> initialize() async{
-    Firebase.initializeApp( // Initialize firebase here so we can use later
-                  options: DefaultFirebaseOptions.currentPlatform,);
-  }
+  Future<void> initialize();
   AuthUser? get currentUser;
   Future<AuthUser> logIn(
     {
