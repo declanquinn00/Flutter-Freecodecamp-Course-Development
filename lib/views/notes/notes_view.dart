@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/utilities/dialogs/logout_dialog.dart';
+import 'package:mynotes/views/notes/notes_list_view.dart';
 import 'dart:developer' as devtools show log; 
 import '../../constants/routes.dart';
 import '../../enums/menu_action.dart';
@@ -75,19 +77,11 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active: // Fallthrough from waiting to active
                       if (snapshot.hasData){
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index){
-                            final note = allNotes[index];
-                            return ListTile(
-                              title: Text(
-                                note.text,
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ), 
-                            );
-                          }
+                        return NotesListView(
+                          notes: allNotes, 
+                          onDeleteNote: (note) async{
+                            await _notesService.deleteNote(id: note.id);
+                          },
                         );
                       }else{
                         return const CircularProgressIndicator();
@@ -107,20 +101,3 @@ class _NotesViewState extends State<NotesView> {
   }
 }
 
-Future<bool> showLogOutDialog(BuildContext context){    // Shows dialog when logout is pressed return true or false
-  return showDialog<bool>(
-    context: context, 
-    builder: (context){
-      return AlertDialog(
-        title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
-        actions: [  // 2 buttons either logs out our cancels
-          TextButton(
-            onPressed: (){Navigator.of(context).pop(false);}, child: const Text('Cancel')),
-          TextButton(
-            onPressed: (){Navigator.of(context).pop(true);}, child: const Text('Logout')),
-        ]
-      );
-    },
-  ).then((value) => value ?? false);  // .then means we return our assertation here
-}
