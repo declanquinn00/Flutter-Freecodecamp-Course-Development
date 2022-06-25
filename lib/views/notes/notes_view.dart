@@ -35,7 +35,7 @@ class _NotesViewState extends State<NotesView> {
         actions: [
         IconButton( // Adds a plus Button to go to new note view
           onPressed: (){
-            Navigator.of(context).pushNamed(newNoteRoute); // Allows us to go back easily to notes view
+            Navigator.of(context).pushNamed(createOrUpdateNoteRoute); // Allows us to go back easily to notes view
           }, 
           icon: const Icon(Icons.add)
         ),
@@ -81,6 +81,12 @@ class _NotesViewState extends State<NotesView> {
                           notes: allNotes, 
                           onDeleteNote: (note) async{
                             await _notesService.deleteNote(id: note.id);
+                          },
+                          onTap: (note) {
+                            Navigator.of(context).pushNamed(
+                              createOrUpdateNoteRoute,
+                              arguments: note,
+                            );
                           },
                         );
                       }else{
