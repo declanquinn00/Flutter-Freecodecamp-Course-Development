@@ -1,3 +1,5 @@
+// REDUNDANT Used for local storage
+/*
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -309,3 +311,5 @@ const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
       "email"	TEXT NOT NULL UNIQUE,
       PRIMARY KEY("id" AUTOINCREMENT)
       );''';
+
+*/
