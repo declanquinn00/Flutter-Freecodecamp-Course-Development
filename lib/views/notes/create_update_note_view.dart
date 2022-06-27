@@ -112,7 +112,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
            icon: const Icon(Icons.share),
           ),
         ],
-        ),
+      ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context),
         builder: (context, snapshot){
