@@ -67,7 +67,7 @@ class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(); // Create the homepage state
 }
 
 class _HomePageState extends State<HomePage> {
@@ -88,11 +88,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterBloc(),
+      create: (context) => CounterBloc(), // Counter Bloc is the build context
       child: Scaffold(
-        appBar: AppBar(title: const Text('Testing bloc'),
+        appBar: AppBar(
+          title: const Text('Testing bloc'),
         ),
-        body: BlocConsumer<CounterBloc, CounterState>(
+        body: BlocConsumer<CounterBloc, CounterState>(  // combines listener and builder
           listener: (context, state) {
             _controller.clear();
           },
@@ -103,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 Text('Current value => ${state.value}'),
                 Visibility(
                   child: Text('Invalid input: $invalidValue'),
-                  visible: state is CounterStateInvalidNumber,
+                  visible: state is CounterStateInvalidNumber,  // Will show if state is CounterStateInvalidNumber
                   ),
                   TextField(
                     controller: _controller,
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     keyboardType: TextInputType.number,
                   ),
-                  Row(
+                  Row(    // Displays increment and decrement buttons
                     children:[
                       TextButton(
                         onPressed: (){
