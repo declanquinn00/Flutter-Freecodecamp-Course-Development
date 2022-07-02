@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_event.dart';
+import 'package:mynotes/services/auth/bloc/auth_state.dart';
+import 'package:mynotes/services/auth/firebase_auth_provider.dart';
 import 'package:mynotes/views/login_view.dart';
 import 'package:mynotes/views/notes/create_update_note_view.dart';
 import 'package:mynotes/views/notes/notes_view.dart';
@@ -10,7 +14,6 @@ import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 //import 'dart:developer' as devtools show log; //Only show log options from dart:developer by typing devtools.XXX
 //import 'firebase_options.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // ensure firebase gets initialized
@@ -20,8 +23,12 @@ void main() {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
-      routes: {   // Named paths to different views with strings as keys
+      home: BlocProvider<AuthBloc>( // create homepage in a bloc provider
+        create: (context) => AuthBloc(FirebaseAuthProvider()),
+        child: const HomePage(),
+      ),
+      routes: {
+        // Named paths to different views with strings as keys
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
@@ -31,169 +38,28 @@ void main() {
     ),
   );
 }
-/*
-class Homepage extends StatelessWidget {
-  const Homepage({ Key? key }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) { // Buld context is packaged info to pass info from one widget to another
-    return FutureBuilder(  // run future value then build widget
-        future: AuthService.firebase().initialize(),
-        builder:(context, snapshot) { // snapshot is a state returns the result of our future
-          switch (snapshot.connectionState){ // What do we do while connecting
-            case ConnectionState.done: // If finished user will see this
-              final user = AuthService.firebase().currentUser;
-              if (user != null){
-                if (user.isEmailVerified){
-                  return const NotesView(); // Main UI screen
-                }
-                else{
-                  return const VerifyEmailView();
-                }
-              }
-              else {
-                return const LoginView();
-              }
-          default:  // else user will see this text
-            return const CircularProgressIndicator(); // Loading indicator
-          }
-        },
-      );
-  }
-}
-*/
-
-class HomePage extends StatefulWidget {
-  const HomePage({ Key? key }) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState(); // Create the homepage state
-}
-
-class _HomePageState extends State<HomePage> {
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    _controller = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CounterBloc(), // Counter Bloc is the build context
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Testing bloc'),
-        ),
-        body: BlocConsumer<CounterBloc, CounterState>(  // combines listener and builder
-          listener: (context, state) {
-            _controller.clear();
-          },
-          builder:(context, state) {
-            final invalidValue = (state is CounterStateInvalidNumber) ? state.invalidValue : '';
-            return Column(
-              children:[
-                Text('Current value => ${state.value}'),
-                Visibility(
-                  child: Text('Invalid input: $invalidValue'),
-                  visible: state is CounterStateInvalidNumber,  // Will show if state is CounterStateInvalidNumber
-                  ),
-                  TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter a number here,'
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  Row(    // Displays increment and decrement buttons
-                    children:[
-                      TextButton(
-                        onPressed: (){
-                          context.read<CounterBloc>().add(DecrementEvent(_controller.text));
-                        }, 
-                        child: const Text('-'),
-                      ),
-                      TextButton(
-                        onPressed: (){
-                          context.read<CounterBloc>().add(IncrementEvent(_controller.text));
-                        }, 
-                        child: const Text('+'),
-                      ),
-                    ],
-                  ),
-              ],
-            );
-          }),
-        ),
-      );
-  }
-}
 
-@immutable
-abstract class CounterState{
-  final int value;
-  const CounterState(this.value);
-}
-
-class CounterStateValid extends CounterState{
-  const CounterStateValid(int value): super(value);
-}
-
-class CounterStateInvalidNumber extends CounterState{
-  final String invalidValue;
-  const CounterStateInvalidNumber({
-    required this.invalidValue,
-    required int previousValue,
-  }) : super(previousValue);
-}
-
-@immutable
-abstract class CounterEvent{
-  final String value;
-  const CounterEvent(this.value);
-}
-
-class IncrementEvent extends CounterEvent{
-  const IncrementEvent(String value) : super(value);
-}
-
-class DecrementEvent extends CounterEvent{
-  const DecrementEvent(String value) : super(value);
-}
-
-class CounterBloc extends Bloc<CounterEvent, CounterState>{
-  CounterBloc():super(const CounterStateValid(0)){
-    on<IncrementEvent>((event, emit) {
-      final integer = int.tryParse(event.value);
-      if(integer == null){
-        emit(CounterStateInvalidNumber(
-          invalidValue: event.value, 
-          previousValue: state.value
-          ),
-        );
-      } else{
-        emit(CounterStateValid(state.value + integer));
+    context.read<AuthBloc>().add(const AuthEventInitialize());
+    return BlocBuilder<AuthBloc, AuthState>(builder: ((context, state) {
+      if (state is AuthStateLoggedIn){
+        return const NotesView();
       }
-    });
-    on<DecrementEvent>((event, emit) {
-      final integer = int.tryParse(event.value);
-      if(integer == null){
-        emit(CounterStateInvalidNumber(
-          invalidValue: event.value, 
-          previousValue: state.value
-          ),
-        );
-      } else{
-        emit(CounterStateValid(state.value - integer));
+      else if (state is AuthStateNeedsVerification){
+        return const VerifyEmailView();
       }
-    });
+      else if (state is AuthStateLoggedOut){
+        return const LoginView();
+      } else{
+        return const Scaffold(
+          body: CircularProgressIndicator(),
+        );
+      }
+    }));
   }
 }
