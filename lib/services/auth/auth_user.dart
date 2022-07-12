@@ -12,6 +12,6 @@ class AuthUser{
     id: user.uid, 
     email: user.email!, 
     isEmailVerified: user.emailVerified,
-    ); // takes emailverified from firebase user and places in Authuser
+  ); // takes emailverified from firebase user and places in Authuser
 }
 
