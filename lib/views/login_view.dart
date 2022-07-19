@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
             if (state.exception is UserNotFoundAuthException) {
-              await showErrorDialog(context, 'User not found');
+              await showErrorDialog(context, 'Cannot find a user with the entered credentials');
             } else if (state.exception is WrongPasswordAuthException) {
               await showErrorDialog(context, 'Wrong credentials');
             } else if (state.exception is GenericAuthException) {
@@ -53,51 +53,65 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text('Login')),
-        body: Column(
-          children: [
-            TextField(
-                controller:
-                    _email, // Linked to our TextEditingController _email
-                keyboardType:
-                    TextInputType.emailAddress, // Necessary fields for email!!!
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  // Decoration allows a hintText that dissapears when user starts typing
-                  hintText: 'Enter your Email here',
-                )),
-            TextField(
-                controller: _password,
-                obscureText:
-                    true, // Necessary fields for password text Fields!!!
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your password here',
-                )),
-            TextButton(
-              onPressed: () async {
-                final email =
-                    _email.text; // gets the text from _email controller
-                final password = _password.text;
-                context.read<AuthBloc>().add(
-                      AuthEventLogIn(
-                        email,
-                        password,
-                      ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                  controller:
+                      _email, // Linked to our TextEditingController _email
+                  keyboardType:
+                      TextInputType.emailAddress, // Necessary fields for email!!!
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    // Decoration allows a hintText that dissapears when user starts typing
+                    hintText: 'Enter your Email here',
+                  )),
+              TextField(
+                  controller: _password,
+                  obscureText:
+                      true, // Necessary fields for password text Fields!!!
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your password here',
+                  )),
+              TextButton(
+                onPressed: () async {
+                  final email =
+                      _email.text; // gets the text from _email controller
+                  final password = _password.text;
+                  context.read<AuthBloc>().add(
+                        AuthEventLogIn(
+                          email,
+                          password,
+                        ),
+                      );
+                },
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                    const AuthEventShouldRegister(),
                     );
-              },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                  const AuthEventShouldRegister(),
-                  );
-              },
-              child: const Text('Register Here'),
-            )
-          ],
+                },
+                child: const Text('Register Here'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final email =
+                      _email.text; // gets the text from _email controller
+                  final password = _password.text;
+                  context.read<AuthBloc>().add(
+                        const AuthEventForgotPassword(),
+                      );
+                },
+                child: const Text('Forgot password?'),
+              ),
+            ],
+          ),
         ),
       ),
     );
