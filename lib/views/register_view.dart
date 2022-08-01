@@ -60,58 +60,60 @@ class _RegisterViewState extends State<RegisterView> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                  controller:
-                      _email, // Linked to our TextEditingController _email
-                  keyboardType:
-                      TextInputType.emailAddress, // Necessary fields for email!!!
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  autofocus: true, // automatically opens keyboard on this text field
-                  decoration: const InputDecoration(
-                    // Decoration allows a hintText that dissapears when user starts typing
-                    hintText: 'Enter your Email here',
-                  )),
-              TextField(
-                  controller: _password,
-                  obscureText:
-                      true, // Necessary fields for password text Fields!!!
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your password here',
-                  )),
-              Center(
-                child: Column(
-                  children: [
-                    TextButton(
-                      onPressed: () async {
-                        final email = _email.text; // gets the text from _email controller
-                        final password = _password.text;
-                        context.read<AuthBloc>().add(AuthEventRegister(
-                          email, 
-                          password,
-                          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                    controller:
+                        _email, // Linked to our TextEditingController _email
+                    keyboardType:
+                        TextInputType.emailAddress, // Necessary fields for email!!!
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    autofocus: true, // automatically opens keyboard on this text field
+                    decoration: const InputDecoration(
+                      // Decoration allows a hintText that dissapears when user starts typing
+                      hintText: 'Enter your Email here',
+                    )),
+                TextField(
+                    controller: _password,
+                    obscureText:
+                        true, // Necessary fields for password text Fields!!!
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your password here',
+                    )),
+                Center(
+                  child: Column(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          final email = _email.text; // gets the text from _email controller
+                          final password = _password.text;
+                          context.read<AuthBloc>().add(AuthEventRegister(
+                            email, 
+                            password,
+                            ),
+                          );
+                        },
+                        child: const Text('Register'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                        context.read<AuthBloc>().add(
+                          const AuthEventLogOut(),
                         );
                       },
-                      child: const Text('Register'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                      context.read<AuthBloc>().add(
-                        const AuthEventLogOut(),
-                      );
-                    },
-                      child: const Text('Go to Login')
-                    ),
-                  ],
+                        child: const Text('Go to Login')
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              
-            ],
+                
+              ],
+            ),
           ),
         ),
       ),
